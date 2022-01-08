@@ -8,7 +8,6 @@ import aboutWin from "./pages/aboutWin";
 import settingWin from "./pages/settingWin";
 
 import AppTray from "./tray/AppTray";
-import * as Api from "./api";
 import LocConfig from "./config";
 import * as IPC from "./manager/ipc";
 const log = require("./utils/Logger");

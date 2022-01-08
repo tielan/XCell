@@ -26,7 +26,6 @@
     "electron": "^11.4.12",
     "electron-log": "^4.3.0",
     "electron-store": "^8.0.0",
-    "electron-updater": "^4.3.5",
     "element-ui": "^2.15.5",
     "lodash": "^4.17.21",
     "vue": "^2.6.11",

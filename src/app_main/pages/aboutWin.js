@@ -2,7 +2,6 @@ import path from "path";
 import fs from "fs";
 import logo from "../logo";
 import contextMenu from "../utils/contextMenu";
-import { autoUpdater } from "electron-updater";
 import { app, BrowserWindow, ipcMain } from "electron";
 
 export default (xapp) => () => {
@@ -42,10 +41,6 @@ export default (xapp) => () => {
   $win.webContents.on("context-menu", (e, params) => {
     e.preventDefault();
     contextMenu($win, params);
-  });
-
-  ipcMain.on("ABOUTWIN:checkForUpdates", () => {
-    autoUpdater.checkForUpdates();
   });
 
   // 加载URL地址

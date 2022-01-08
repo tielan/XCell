@@ -7,7 +7,4 @@ export default class SystemIPC {
   register() {
    
   }
-  action(action, params) {
-   
-  }
 }
