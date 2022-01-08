@@ -17,20 +17,17 @@
     "postinstall": "electron-builder install-app-deps",
     "postuninstall": "electron-builder install-app-deps",
     "open": "start dist_electron",
-    "electron:icons": "electron-icon-builder --input=./public/icons/icon.png --output=public --flatten"
+    "icons": "electron-icon-builder --input=./public/icons/icon.png --output=public --flatten"
   },
   "main": "background.js",
   "dependencies": {
     "axios": "^0.21.1",
-    "chokidar": "^3.5.2",
-    "compressing": "^1.5.1",
     "core-js": "^3.6.5",
     "electron": "^11.4.12",
     "electron-log": "^4.3.0",
     "electron-store": "^8.0.0",
     "electron-updater": "^4.3.5",
     "element-ui": "^2.15.5",
-    "express": "^4.17.1",
     "lodash": "^4.17.21",
     "vue": "^2.6.11",
     "vue-router": "^3.2.0",
