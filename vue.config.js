@@ -4,18 +4,17 @@ module.exports = {
   },
   pluginOptions: {
     electronBuilder: {
-      externals: ["electron-screenshots"],
       builderOptions: {
         extraResources: ["icon"],
       },
-      productName: "gov_hall",
+      productName: "xcell_app",
       nodeIntegration: true,
       fileAssociations: {
         protocols: ["app"],
       },
       builderOptions: {
-        appId: "com.chinacrator.gov_hall_app",
-        productName: "gov_hall",
+        appId: "com.fengyu.xcell_app",
+        productName: "xcell_app",
 
         publish: [
           {
