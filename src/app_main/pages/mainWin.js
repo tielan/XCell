@@ -1,7 +1,7 @@
 import path from "path";
 import logo from "../logo";
 import { BrowserWindow, ipcMain } from "electron";
-export default (xapp) => (_url) => {
+export default (xapp) => () => {
   if (xapp.$mainWin) {
     xapp.showMainWin();
     return;
@@ -13,8 +13,6 @@ export default (xapp) => (_url) => {
     height: 400,
     show: false,
     icon: logo,
-    frame:false,
-    resizable: false,
     webPreferences: {
       nodeIntegration: true,
       webSecurity: false,
@@ -58,8 +56,8 @@ export default (xapp) => (_url) => {
   // 加载URL地址
   const URL =
     process.env.NODE_ENV === "development"
-      ? `http://localhost:8080/index.html#/splash?link=${encodeURIComponent(_url)}`
-      : `app://./index.html#/splash?link=${encodeURIComponent(_url)}`;
+      ? `http://localhost:8080/index.html#/splash`
+      : `app://./index.html#/splash`;
   $win.loadURL(URL);
   return $win;
 };

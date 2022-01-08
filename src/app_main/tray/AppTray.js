@@ -20,7 +20,6 @@ export default class AppTray {
     this.$tray.setToolTip("xapp");
     this.$trayCollect = [];
     this.initEvent();
-    this.initMenuMap();
     this.setMenu();
   }
 
@@ -31,118 +30,19 @@ export default class AppTray {
     this.$tray.on("click", () => this._govhall.showMainWin());
     this.$tray.on("double-click", () => this._govhall.showMainWin());
   }
-  initMenuMap() {
-    let device = LocConfig.getDeviceConfig();
-    const callPage = LocConfig.get("callPage");
-    this.$trayCollect = [
-      {
-        label: "显示主窗口",
-        click: () => this._govhall.showMainWin(),
-      },
-      {
-        label: "显示副屏",
-        click: () => this._govhall.showExternalWin(),
-      },
-      {
-        label: "水牌设置",
-        click: () => {
-          this._govhall.showOtherWin(
-            "infoPage",
-            device["infoPage"],
-            device["infoConfig"]
-          );
-        },
-      },
-      {
-        label: "呼叫器",
-        click: () => {
-          this._govhall.showOtherWin(
-            "callPage",
-            callPage,
-            device["callConfig"]
-          );
-        },
-      },
-      {
-        label: "双屏",
-        submenu: [
-          {
-            label: "扩展",
-            type: "radio",
-            checked: !!ContextUtls.externalDisplay(),
-            click: () => {
-              child_process.exec("displayswitch /extend");
-              this.timer && clearTimeout(this.timer);
-              this.timer = setTimeout(() => {
-                this._govhall.initExternalWin();
-              }, 5000);
-            },
-          },
-          {
-            label: "复制",
-            type: "radio",
-            checked: !ContextUtls.externalDisplay(),
-            click: () => {
-              this.timer && clearTimeout(this.timer);
-              this._govhall.$externalWin && this._govhall.$externalWin.hide();
-              child_process.exec("displayswitch /clone");
-            },
-          },
-        ],
-      },
-    ];
-  }
   /**
    * 设置菜单
    */
   setMenu() {
-    let trayMenu = [];
-    if (
-      LocConfig.getDeviceConfig() &&
-      LocConfig.getDeviceConfig()["trayMenu"]
-    ) {
-      trayMenu = LocConfig.getDeviceConfig()["trayMenu"];
-    }
-    let menuArr = [];
-    trayMenu.map((_item) => {
-      let m = this.$trayCollect.find((item) => _item.label == item.label);
-      if (m) {
-        menuArr.push(m);
-      }
-    });
-    const menu = [...menuArr];
-    menu.push({ type: "separator" });
+    const menu = [];
     menu.push({
       label: "系统设置",
       click: () => this._govhall.showSettingWin(),
     });
-    if (process.platform === "win32") {
-      menu.push({
-        label: "开机自启动",
-        type: "checkbox",
-        checked: this._govhall.setting["autoStart"],
-        click: (event, value) => {
-          this._govhall.registerLoginStart(event.checked);
-        },
-      });
-    }
     menu.push({ type: "separator" });
     menu.push({
-      label: "帮助",
-      submenu: [
-        {
-          label: "开发模式",
-          type: "checkbox",
-          checked: false,
-          click: (event, value) => {
-            this._govhall.settingToDebug(event.checked);
-          },
-        },
-        {
-          label: "关于",
-          click: () => this._govhall.showAboutWin(),
-        },
-      ],
+      label: "关于",
+      click: () => this._govhall.showAboutWin(),
     });
     menu.push({
       label: "退出",

@@ -41,7 +41,7 @@ export default class GovHallApp {
     });
   }
   initLog() {
-    log.info("gov_hall","start app");
+    log.info("xcellApp","start app");
     console.error = console.log = function() {
       log.info(...arguments);
     };
@@ -110,7 +110,7 @@ export default class GovHallApp {
    * 初始化主窗口
    */
   initMainWin() {
-    this.$mainWin = mainWin(this)(LocConfig.getMianPageUrl());
+    this.$mainWin = mainWin(this)();
   }
 
   /**
