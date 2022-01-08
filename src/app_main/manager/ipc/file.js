@@ -5,8 +5,8 @@ const { ipcMain } = require("electron");
 const os = require("os");
 const { print, getPrinters } = require("../../printer/file");
 export default class FileIPC {
-  constructor(govhall) {
-    this.$govhall = govhall;
+  constructor(xapp) {
+    this.$xapp = xapp;
   }
   register() {
     //文件保存
@@ -76,8 +76,8 @@ export default class FileIPC {
 
     ipcMain.handle("getFile", (event, params) => {
       return new Promise((resolve, reject) => {
-        if (this.$govhall.$dirWatchManager) {
-          let filepath = this.$govhall.$dirWatchManager.getRealPath(
+        if (this.$xapp.$dirWatchManager) {
+          let filepath = this.$xapp.$dirWatchManager.getRealPath(
             params.path
           );
           fs.readFile(filepath, (err, data) => {

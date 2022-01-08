@@ -5,10 +5,10 @@ const socket_io = require("socket.io");
 const log = require("../utils/Logger");
 
 export default class ServerSIO {
-  constructor(httpServer, govhall) {
+  constructor(httpServer, xapp) {
     const io = socket_io.listen(httpServer, { serveClient: false, cors: true });
     this.io = io;
-    this.govhall = govhall;
+    this.xapp = xapp;
     this.allClient = {};
   }
   connect() {
@@ -39,22 +39,22 @@ export default class ServerSIO {
       });
       client.on("CMD", (cmdData, callback) => {
         if (
-          this.govhall.setting["deviceType"] == 5 ||
-          this.govhall.setting["deviceType"] == 6
+          this.xapp.setting["deviceType"] == 5 ||
+          this.xapp.setting["deviceType"] == 6
         ) {
           let result = { status: 500, message: "副屏幕未正常启动" };
-          if (this.govhall.$externalWin) {
-            result = this.govhall.$externalWin.onCmdAction(cmdData);
+          if (this.xapp.$externalWin) {
+            result = this.xapp.$externalWin.onCmdAction(cmdData);
           }
           sendAck(result.status, result.message);
           return;
         }
-        if (!this.govhall.setting["pjClientNum"]) {
+        if (!this.xapp.setting["pjClientNum"]) {
           sendAck(401, "未配置客户端编号");
           return;
         }
         if (cmdData && cmdData.cmdCode == "C10") {
-          Manager.startCaptrue(this.govhall)
+          Manager.startCaptrue(this.xapp)
             .then((resData) => {
               if (callback) {
                 callback(resData);
@@ -68,7 +68,7 @@ export default class ServerSIO {
         } else if (cmdData && cmdData.cmdCode) {
           let parmas = {
             ...cmdData,
-            clientNum: this.govhall.setting["pjClientNum"],
+            clientNum: this.xapp.setting["pjClientNum"],
           };
           Api.pushMessage(parmas)
             .then((res) => {

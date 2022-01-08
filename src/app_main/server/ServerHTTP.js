@@ -6,9 +6,9 @@ const path = require("path");
 var fs = require("fs");
 
 export default class ServerHTTP {
-  constructor(app, govhall) {
+  constructor(app, xapp) {
     this.app = app;
-    this.govhall = govhall;
+    this.xapp = xapp;
   }
   connect() {
     this.app.use("/m", express.static(path.join(__static, "m")));
@@ -33,11 +33,11 @@ export default class ServerHTTP {
     this.app.get("/app/getFile", (req, res) => {
       const { path } = req.query;
       console.log(path);
-      if (!path || !this.govhall.$dirWatchManager) {
+      if (!path || !this.xapp.$dirWatchManager) {
         res.end("{}");
         return;
       }
-      let filepath = this.govhall.$dirWatchManager.getRealPath(path);
+      let filepath = this.xapp.$dirWatchManager.getRealPath(path);
       fs.readFile(filepath, (err, data) => {
         if (err) {
           res.writeHead(500);
@@ -57,7 +57,7 @@ export default class ServerHTTP {
 
     this.app.get("/app/capture", async (req, res) => {
       try {
-        let wsData = await Manager.startCaptrue(this.govhall);
+        let wsData = await Manager.startCaptrue(this.xapp);
         res.send(wsData);
       } catch (error) {
         res.send({ status: 500, message: error.message || "截图异常" });
@@ -73,7 +73,7 @@ export default class ServerHTTP {
           openUrl,
           ...req.query,
         },
-        clientNum: this.govhall.setting["pjClientNum"],
+        clientNum: this.xapp.setting["pjClientNum"],
       };
       try {
         let result = await Api.pushMessage(parmas);

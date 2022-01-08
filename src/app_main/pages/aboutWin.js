@@ -5,11 +5,11 @@ import contextMenu from "../utils/contextMenu";
 import { autoUpdater } from "electron-updater";
 import { app, BrowserWindow, ipcMain } from "electron";
 
-export default (govhall) => () => {
-  if (govhall.$aboutWin) {
-    govhall.$aboutWin.show();
-    govhall.$aboutWin.focus();
-    return govhall.$aboutWin;
+export default (xapp) => () => {
+  if (xapp.$aboutWin) {
+    xapp.$aboutWin.show();
+    xapp.$aboutWin.focus();
+    return xapp.$aboutWin;
   }
   const $win = new BrowserWindow({
     title: "关于",
@@ -35,7 +35,7 @@ export default (govhall) => () => {
 
   // 窗口关闭后手动让$window为null
   $win.on("closed", () => {
-    govhall.$aboutWin = null;
+    xapp.$aboutWin = null;
   });
 
   // 右键上下文菜单

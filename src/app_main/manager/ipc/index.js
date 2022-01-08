@@ -4,9 +4,9 @@ import LocConfig from "../../config";
 const { ipcMain } = require("electron");
 const packageJSON = require("../../../../package.json");
 
-export function register(govhall) {
-  new System(govhall).register();
-  new FileIPC(govhall).register();
+export function register(xapp) {
+  new System(xapp).register();
+  new FileIPC(xapp).register();
 
   //获取配置列表
   ipcMain.on("loadConfig", (event, arg) => {
@@ -24,7 +24,7 @@ export function register(govhall) {
   ipcMain.on("localStorage-setItem-sync", (event, arg) => {
     event.sender.send("localStorage-setItem", {
       key: "govhall_setting",
-      value: JSON.stringify(govhall.setting),
+      value: JSON.stringify(xapp.setting),
     });
   });
 }

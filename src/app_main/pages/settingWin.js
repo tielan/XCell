@@ -3,11 +3,11 @@ import path from "path";
 import logo from "../logo";
 import { app, BrowserWindow, ipcMain } from "electron";
 
-export default (govhall) => () => {
-  if (govhall.$settingWin) {
-    govhall.$settingWin.show();
-    govhall.$settingWin.focus();
-    return govhall.$settingWin;
+export default (xapp) => () => {
+  if (xapp.$settingWin) {
+    xapp.$settingWin.show();
+    xapp.$settingWin.focus();
+    return xapp.$settingWin;
   }
   const $win = new BrowserWindow({
     title: "设置",
@@ -33,19 +33,19 @@ export default (govhall) => () => {
 
   // 窗口关闭后手动让$window为null
   $win.on("closed", () => {
-    govhall.$settingWin = null;
+    xapp.$settingWin = null;
   });
 
   $win.webContents.on("dom-ready", () => {
     setTimeout(() => {
-      $win.webContents.send("dom-ready", govhall.setting);
+      $win.webContents.send("dom-ready", xapp.setting);
     }, 500);
   });
 
   ipcMain.on("SETTINGWIN:setting",(e, setting) => {
-    govhall.setting = setting;
-    govhall.writeSetting();
-    govhall.hideSettingWin();
+    xapp.setting = setting;
+    xapp.writeSetting();
+    xapp.hideSettingWin();
   });
 
   // 加载URL地址

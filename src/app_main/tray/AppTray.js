@@ -6,18 +6,18 @@ import LocConfig from "../config";
 import { getMessageTrayIcon, getNoMessageTrayIcon } from "../logo";
 
 export default class AppTray {
-  constructor(govhall) {
+  constructor(xapp) {
     // 图标闪烁定时
     this._flickerTimer = null;
     // 图标文件
     this.messageTrayIcon = getMessageTrayIcon();
     this.noMessageTrayIcon = getNoMessageTrayIcon();
 
-    this._govhall = govhall;
+    this._govhall = xapp;
     // 生成托盘图标及其菜单项实例
     this.$tray = new Tray(this.noMessageTrayIcon);
     // 设置鼠标悬浮时的标题
-    this.$tray.setToolTip("GovHall");
+    this.$tray.setToolTip("xapp");
     this.$trayCollect = [];
     this.initEvent();
     this.initMenuMap();

@@ -10,7 +10,7 @@ export default class Notify extends Events {
   show (body) {
     this.close()
     this.$notify = new Notification({
-      title: 'GovHall',
+      title: 'xapp',
       body,
       icon: logo
     })
