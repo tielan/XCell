@@ -7,7 +7,7 @@
       :rules="formRules"
       ref="ruleForm"
     >
-      <div style="height:15px"></div>
+      <div style="height: 15px"></div>
       <el-form-item label="设备类型" prop="deviceType">
         <el-select
           placeholder="请选择设备类型"
@@ -22,7 +22,7 @@
           ></el-option>
         </el-select>
       </el-form-item>
-      <div style="height:1px"></div>
+      <div style="height: 1px"></div>
       <el-divider content-position="center">服务器配置</el-divider>
       <el-form-item label="服务器IP" prop="host">
         <el-input v-model="form.host" placeholder="172.16.17.96"></el-input>
@@ -48,84 +48,15 @@
   </div>
 </template>
 <script>
-import cloneDeep from "lodash/cloneDeep";
-import * as Validate from "@/utils/Validate";
 export default {
-  name: "Home",
+  name: "Setting",
   data() {
-    return {
-      formRules: {
-        deviceType: [{ required: true, message: "设备类型不能为空" }],
-        host: [
-          { required: true, message: "服务器地址不能为空" },
-          { validator: Validate.isValidIp, message: "ip格式非法" },
-        ],
-        port: [
-          { required: true, message: "http端口不能为空" },
-          { type: "number", message: "端口必须为数字值" },
-        ],
-        ports: [{ type: "number", message: "端口必须为数字值" }],
-        localPort: [{ type: "number", message: "端口必须为数字值" }],
-      },
-      form: {
-        devices: [
-          {
-            name: "一体机",
-            type: "0",
-            code: "autoterminal",
-            page: "/autoterminal/index.html?t=${time}#/",
-            extPage: "/autoterminal/index.html?t=${time}#/se",
-          },
-          {
-            name: "排队机",
-            type: "1",
-            code: "offernumber",
-            page: "/offernumber/index.html?t=${time}#/",
-          },
-        ],
-        pjClientNum: null,
-        deviceType: "",
-        host: null,
-        port: null,
-        ports: null,
-        localPort: null,
-      },
-      oldSeting: {},
-    };
+    return {};
   },
   created() {
     console.log("init");
-    if (window.CNative && window.CNative.onDomReady) {
-      window.CNative.onDomReady((event, setting) => {
-        let _setting = cloneDeep(setting);
-        this.oldSeting = cloneDeep(setting);
-        this.form = { ...this.form, ..._setting };
-      });
-    }
   },
-  methods: {
-    onSubmit(exit) {
-      this.$refs["ruleForm"].validate((valid) => {
-        if (valid) {
-          if (window.CNative && window.CNative.saveSetting) {
-            if (
-              this.oldSeting["deviceType"] != this.form["deviceType"] ||
-              this.oldSeting["host"] != this.form["host"] ||
-              this.oldSeting["port"] != this.form["port"]
-            ) {
-              this.form["clientNum"] = 0;
-            }
-            window.CNative.saveSetting(this.form);
-            if (exit) {
-              window.CNative.appRelaunch();
-            }
-          }
-        } else {
-          return false;
-        }
-      });
-    },
-  },
+  methods: {},
 };
 </script>
 <style lang="scss">

@@ -11,9 +11,6 @@ export default {
       version: "1.0.0",
     };
   },
-  mounted() {
-    this.version = window.CNative.getPackageJson().version
-  },
 };
 </script>
 

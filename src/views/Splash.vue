@@ -1,22 +1,15 @@
 <template>
   <div
     class="splash"
-    :style="`background-image:url(${require('../assets/bg.png')}) `"
   >
     <div class="splashContent">
       <div class="splashLogo">
-        <img :src="require('../assets/logo.png')" />
       </div>
       <div class="splashMain">
         <div class="splashType1">
-          <img :src="require('../assets/splashgif.gif')" />
           <span id="info">正在连接服务器...</span>
         </div>
         <div class="splashType2">
-          <font
-            :style="`background-image:url(${require('../assets/button.png')}) `"
-            >刷新试试</font
-          >
         </div>
       </div>
     </div>
@@ -31,46 +24,8 @@ export default {
       url: "",
     };
   },
-  mounted() {
-    const { link } = this.$route.query;
-    console.log("init" + link);
-    this.checkConnected(link).then(() => {
-      window.location.href = link;
-    });
-    this.timer = setInterval(() => {
-      console.log("rert");
-      this.checkConnected(link).then(() => {
-        window.location.href = link;
-      });
-    }, 3000);
-  },
-  destroyed() {
-    console.log("destroyed");
-    this.timer && clearInterval(this.timer);
-  },
   methods: {
-    checkConnected(url) {
-      return new Promise((resolve, reject) => {
-        var timer = setTimeout(() => {
-          reject();
-        }, 2000);
-        fetch(url)
-          .then((res) => {
-            console.log(res);
-            timer && clearTimeout(timer);
-            if (res.status == 200) {
-              console.log("jumpTo->" + url);
-              resolve(url);
-            } else {
-              reject();
-            }
-          })
-          .catch(() => {
-            timer && clearTimeout(timer);
-            reject();
-          });
-      });
-    },
+   
   },
 };
 </script>

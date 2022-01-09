@@ -9,8 +9,8 @@ export default (xapp) => () => {
   // 创建浏览器窗口
   const $win = new BrowserWindow({
     title: "XCellApp",
-    width: 400,//解决不透明 为黑背景bug
-    height: 400,
+    width: 760,//解决不透明 为黑背景bug
+    height: 900,
     show: false,
     icon: logo,
     webPreferences: {
@@ -56,8 +56,8 @@ export default (xapp) => () => {
   // 加载URL地址
   const URL =
     process.env.NODE_ENV === "development"
-      ? `http://localhost:8080/index.html#/splash`
-      : `app://./index.html#/splash`;
+      ? `http://localhost:8080/index.html`
+      : `app://./index.html`;
   $win.loadURL(URL);
   return $win;
 };
