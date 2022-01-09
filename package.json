@@ -23,6 +23,7 @@
   "dependencies": {
     "axios": "^0.21.1",
     "core-js": "^3.6.5",
+    "docx-templates": "^4.8.2",
     "electron": "^11.4.12",
     "electron-log": "^4.3.0",
     "electron-store": "^8.0.0",

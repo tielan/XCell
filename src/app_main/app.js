@@ -32,7 +32,7 @@ export default class GovHallApp {
     this.init().then(() => {
       app.setAppUserModelId("com.chiancreator.xapp");
       // 移除窗口菜单
-      Menu.setApplicationMenu(null);
+      //Menu.setApplicationMenu(null);
       createProtocol(URLSCHEME);
       this.initMainWin();
       this.initTray();
