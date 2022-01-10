@@ -4,18 +4,27 @@ import fs from "fs";
 import createReport from "docx-templates";
 import os from "os";
 import { exec } from "child_process";
-const outpath = path.join(os.homedir(),"Desktop", "xcell_output");
+const outpath =  path.join(os.homedir(), "Desktop", "xcell_output");
+const xlxoutpath = path.join(outpath, "表格");
+const docoutpath = path.join(outpath, "文档");
+
 export default class XLSXManger {
   static init() {
     if (!fs.existsSync(outpath)) {
       fs.mkdirSync(outpath);
+    }
+    if (!fs.existsSync(xlxoutpath)) {
+      fs.mkdirSync(xlxoutpath);
+    }
+    if (!fs.existsSync(docoutpath)) {
+      fs.mkdirSync(docoutpath);
     }
   }
   /**
    * xlsx 文件处理
    */
   static handlerFile(byteArray) {
-    XLSXManger.init()
+    XLSXManger.init();
     let workbook = xlsx.read(byteArray);
     let sheetNames = workbook.SheetNames; //获取表明
     let sheet = workbook.Sheets[sheetNames[0]]; //通过表明得到表对象
@@ -44,6 +53,7 @@ export default class XLSXManger {
         ...gdlx,
         tbmj: `${item.TBBH}（${item.JMMJ}亩）`,
         wzxx: `${dkbmSub}(${item.X},${item.Y})`,
+        address:`${item.XZQMC}${item.ZLDWMC}`
       };
       listData.push(cellMap);
     });
@@ -56,12 +66,13 @@ export default class XLSXManger {
           //同一个人
           preItem = {
             ...preItem,
-            tbmj: `${preItem.tbmj},${item.tbmj}`,
-            wzxx: `${preItem.wzxx},${item.wzxx}`,
-            st_mj: XLSXManger.plus(preItem.st_mj, item.st_mj),
-            hd_mj: XLSXManger.plus(preItem.hd_mj, item.hd_mj),
-            sjd_mj: XLSXManger.plus(preItem.sjd_mj, item.sjd_mj),
-            qt_mj: XLSXManger.plus(preItem.qt_mj, item.qt_mj),
+            TBBH: XLSXManger.plusStr(preItem.TBBH, item.TBBH), //图斑 编号
+            tbmj: XLSXManger.plusStr(preItem.tbmj, item.tbmj), //图斑 面积
+            wzxx: XLSXManger.plusStr(preItem.wzxx, item.wzxx), //位置信息 经纬度
+            st_mj: XLSXManger.plus(preItem.st_mj, item.st_mj), //水田 面积
+            hd_mj: XLSXManger.plus(preItem.hd_mj, item.hd_mj), //旱地 面积
+            sjd_mj: XLSXManger.plus(preItem.sjd_mj, item.sjd_mj), //水浇地 面积
+            qt_mj: XLSXManger.plus(preItem.qt_mj, item.qt_mj), //其他 面积
           };
         } else {
           resultList.push(preItem);
@@ -74,6 +85,14 @@ export default class XLSXManger {
     resultList.push(preItem);
     return resultList;
   }
+  //字符串相加
+  static plusStr(a, b) {
+    if (`${a}`.indexOf(b) != -1) {
+      return a;
+    }
+    return `${a},${b}`;
+  }
+  //面积相加
   static plus(a, b) {
     if (a) {
       if (b) {
@@ -111,11 +130,8 @@ export default class XLSXManger {
     const wb = xlsx.utils.book_new();
     let workSheet = xlsx.utils.aoa_to_sheet(listData);
     xlsx.utils.book_append_sheet(wb, workSheet, "Sheet1");
-    xlsx.writeFile(
-      wb,
-      path.join(outpath, "处理结果.xlsx")
-    );
-    exec("start "+outpath)
+    xlsx.writeFile(wb, path.join(xlxoutpath, "处理结果.xlsx"));
+    exec("start " + xlxoutpath);
   }
 
   static downloadDoc(json) {
@@ -137,9 +153,9 @@ async function writeDoc(list = []) {
       cmdDelimiter: ["{", "}"],
     });
     fs.writeFileSync(
-      path.join(outpath, item.ZJRXM + ".docx"),
+      path.join(docoutpath, `${item.address}_${item.ZJRXM}_入户调查表.docx`),
       buffer
     );
-    exec("start "+outpath)
+    exec("start " + docoutpath);
   }
 }
