@@ -5,8 +5,8 @@ import createReport from "docx-templates";
 import os from "os";
 import { exec } from "child_process";
 const outpath =  path.join(os.homedir(), "Desktop", "xcell_output");
-const xlxoutpath = path.join(outpath, "表格");
-const docoutpath = path.join(outpath, "文档");
+const xlxoutpath = path.join(outpath, "xlsx");
+const docoutpath = path.join(outpath, "docx");
 
 export default class XLSXManger {
   static init() {
